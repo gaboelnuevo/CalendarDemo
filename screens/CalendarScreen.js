@@ -14,11 +14,11 @@ export default function CalendarScreen() {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <View style={{ flexDirection: "column", paddingVertical: 10 }}>
+      <View style={{ flexDirection: "column", paddingVertical: 10, justifyContent: "flex-end" }}>
         <View
-          style={{ maxWidth: 300, flexDirection: "row", paddingHorizontal: 15 }}
+          style={{ maxWidth: 400, flexDirection: "row", paddingHorizontal: 15, alignSelf: "flex-end" }}
         >
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, marginRight: 5, paddingVertical: 2 }}>
             <Picker
               selectedValue={selectedMonth}
               onValueChange={(itemValue, itemIndex) =>
@@ -39,7 +39,7 @@ export default function CalendarScreen() {
               <Picker.Item label="December" value={"11"} />
             </Picker>
           </View>
-          <View style={{ flex: 1, marginRight: 5 }}>
+          <View style={{ flex: 1, marginRight: 5, paddingVertical: 2 }}>
             <Picker
               selectedValue={selectedYear}
               onValueChange={(itemValue, itemIndex) =>
