@@ -5,18 +5,27 @@ import { StyleSheet, Text, View, Picker } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import Calendar from "../components/Calendar";
 import { CURRENT_MONTH, CURRENT_YEAR } from "../Util/calendar";
+import { Button } from "react-native-paper";
 
-export default function CalendarScreen() {
+export default function CalendarScreen({ navigation }) {
   const [selectedYear, setSelectedYear] = useState(CURRENT_YEAR.toString());
   const [selectedMonth, setSelectedMonth] = useState(CURRENT_MONTH.toString());
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
-    >
-      <View style={{ flexDirection: "column", paddingVertical: 10, justifyContent: "flex-end" }}>
+    <>
+      <View
+        style={{
+          flexDirection: "column",
+          paddingVertical: 10,
+          justifyContent: "flex-end",
+        }}
+      >
         <View
-          style={{ maxWidth: 400, flexDirection: "row", paddingHorizontal: 15, alignSelf: "flex-end" }}
+          style={{
+            maxWidth: 400,
+            flexDirection: "row",
+            paddingHorizontal: 15,
+            alignSelf: "flex-end",
+          }}
         >
           <View style={{ flex: 1, marginRight: 5, paddingVertical: 2 }}>
             <Picker
@@ -53,8 +62,22 @@ export default function CalendarScreen() {
           </View>
         </View>
       </View>
-      <Calendar month={selectedMonth} year={selectedYear} />
-    </ScrollView>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+      >
+        <Calendar month={selectedMonth} year={selectedYear} />
+      </ScrollView>
+      <View style={{ padding: 5 }}>
+        <Button
+          icon="bell-plus"
+          mode="text"
+          onPress={() => navigation.navigate("AddReminder")}
+        >
+          Add Reminder
+        </Button>
+      </View>
+    </>
   );
 }
 
