@@ -20,3 +20,7 @@ cd DemoCalendar
 ```
 yarn web
 ```
+
+Notes
+=======
+* color palete: https://coolors.co/5d91cb-88aedd-dfdee9-4679a2-28220a

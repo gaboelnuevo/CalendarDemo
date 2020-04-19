@@ -68,8 +68,8 @@ function fillArray(value, len) {
   return arr;
 }
 
-const CURRENT_YEAR = moment().year();
-const CURRENT_MONTH = moment().month();
+export const CURRENT_YEAR = moment().year();
+export const CURRENT_MONTH = moment().month();
 
 export const generate = (month=CURRENT_MONTH, year = CURRENT_YEAR) => {
   const startDate = moment().month(month).year(year).startOf("month").toDate();

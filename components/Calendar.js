@@ -17,9 +17,11 @@ export default class Calendar extends React.Component {
       <>
         <View style={styles.week}>
           {DAYS.map((day) => {
-            <View style={[styles.weekDay]} key={day}>
-              <Text style={{ textAlign: "center" }}>{day}</Text>
-            </View>;
+            return (
+              <View style={[styles.weekDay]} key={day}>
+                <Text style={[styles.dayText]}>{day}</Text>
+              </View>
+            );
           })}
         </View>
         {data.weeks.map((days, wIndex) => {
@@ -52,18 +54,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: "#939aa3",
-  },
-  contentContainer: {
-    paddingTop: 15,
+    backgroundColor: "#88AEDD",
   },
   week: {
     flexDirection: "row",
     flex: 1,
   },
+  dayText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
   weekDay: {
     flex: 1,
-    backgroundColor: "#e0edff",
+    padding: 5,
+    backgroundColor: "#4679A2",
     margin: 5,
   },
   calendarItem: {
