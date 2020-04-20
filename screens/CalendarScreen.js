@@ -79,9 +79,6 @@ export default function CalendarScreen({ navigation }) {
         >
           Add Reminder
         </Button>
-        <Text
-          style={{ textAlign: "center" }}
-        >{`Count: ${reminders.length}`}</Text>
       </View>
     </>
   );

@@ -19,6 +19,7 @@ export default function AddReminderScreen({ navigation }) {
     };
   };
 
+  const [isSaving, setIssaving] = useState(false);
   const [values, setValues] = useState({});
   const [state, actions] = useReminders();
 
@@ -29,21 +30,41 @@ export default function AddReminderScreen({ navigation }) {
     Alert.alert("Invalid Form!", message);
   };
 
+  const save = async (values) => {
+    const appid = "27a3e6a3b704892ee586f5284872bf80";
+    const data = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${values.city}&appid=${appid}`)
+    .then(function(response) {
+      return response.json();
+    }).catch(() => {
+      setIssaving(false);
+      return null;
+    });
+
+    if (data && data.cod != "404") {
+      values.meta = data;
+      actions.addReminder(values);
+      setValues({});
+      if (!Platform.OS == "web") {
+        navigation.goBack();
+      } else {
+        navigation.navigate("Root");
+      }
+    } else {
+      setIssaving(false);
+      alert("Invalid city!")
+    }
+  }
+
   const handleSubmit = () => {
     if (!values.title) return promptError("Title required!");
     if (!values.date) return promptError("Date required!");
     if (!values.description) return promptError("Description required!");
     if (!values.color) return promptError("Color required!");
     if (!values.city) return promptError("City required!");
-    
-    actions.addReminder(values);
-    setValues({});
 
-    if (!Platform.OS == "web") {
-      navigation.goBack();
-    } else {
-      navigation.navigate("Root");
-    }
+
+    setIssaving(true);
+    save(values);
   };
 
   return (
@@ -92,6 +113,7 @@ export default function AddReminderScreen({ navigation }) {
       />
       <View style={{ marginTop: 30 }}>
         <Button
+          disabled={isSaving}
           icon="content-save"
           mode="contained"
           onPress={() => handleSubmit()}

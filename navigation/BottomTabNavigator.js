@@ -5,6 +5,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import CalendarScreen from '../screens/CalendarScreen';
+import Reminders from "../screens/RemindersScreen";
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Calendar';
@@ -26,6 +27,14 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
+        name="Reminders"
+        component={Reminders}
+        options={{
+          title: 'Reminders',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+        }}
+      />
+{/*       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -40,7 +49,7 @@ export default function BottomTabNavigator({ navigation, route }) {
           title: 'Resources',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
-      />
+      /> */}
     </BottomTab.Navigator>
   );
 }
@@ -51,9 +60,11 @@ function getHeaderTitle(route) {
   switch (routeName) {
     case 'Calendar':
       return 'Calendar';
-    case 'Home':
+    case 'Reminders': 
+      return 'Reminders'
+/*     case 'Home':
       return 'How to get started';
     case 'Links':
-      return 'Links to learn more';
+      return 'Links to learn more'; */
   }
 }

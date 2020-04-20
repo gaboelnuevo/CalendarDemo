@@ -28,7 +28,7 @@ export const RemidersStore = createStore({
       });
       dispatch(persist());
     },
-    removeReminder: (id) => {
+    removeReminder: (id) => ({ setState, getState, dispatch }) => {
       let reminders = getState()
         .reminders.slice()
         .filter((r) => {
