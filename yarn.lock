@@ -5687,6 +5687,13 @@ react-native-iphone-x-helper@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
 
+react-native-modal-datetime-picker@^8.5.4:
+  version "8.5.4"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-8.5.4.tgz#e348367810b4b534c8a1f844ec1f0a57a1542232"
+  integrity sha512-QKs4nsiZ2Ncr9pOrnnFyy3laHzReH87StV54hos1jGhT8MwlC5yQ9QfGqVDy8yRKz3bROST0wg3hS2Wy1mSQuQ==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-paper@^3.8.0:
   version "3.8.0"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-3.8.0.tgz#94d9b50b945ce91c90491cce34d1c27845503990"
@@ -5719,6 +5726,11 @@ react-native-screens@~2.2.0:
   integrity sha512-a0VzxOWot7F9B/GQyDSssBRd3jUJazFnTQS61IiyReWB6aHlFhf3Xz10jBRoURXy1EMCDCHgenmTVTkKHpKyqQ==
   dependencies:
     debounce "^1.2.0"
+
+react-native-status-color-picker@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-status-color-picker/-/react-native-status-color-picker-1.0.5.tgz#aaefc32519cff3d21be69aac0b9589d99a3a2610"
+  integrity sha512-+7srqYc1J5XyHkt5n28pjriUEPhnng9Ijj0wxxuZvLOv8KrU1UfuQ3r+5dmPIXDUs+3MAg/RlkNu0Nvf/1tiyQ==
 
 react-native-view-shot@3.1.2:
   version "3.1.2"
