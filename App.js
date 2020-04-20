@@ -9,6 +9,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import AddReminderScreen from "./screens/AddReminder";
 import useLinking from "./navigation/useLinking";
+import { useReminders, getPersistedState } from "./store/reminders";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,8 @@ export default function App(props) {
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
+
+  const [, { initState }] = useReminders();
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -32,6 +35,10 @@ export default function App(props) {
           ...Ionicons.font,
           "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         });
+
+        const state = await getPersistedState();
+
+        initState(state);
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);

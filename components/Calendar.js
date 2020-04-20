@@ -19,7 +19,15 @@ import moment from "moment";
 
 import _ from "lodash";
 
+import { RemindersSubscriber } from "../store/reminders";
+
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+export const getRemindersFromRange = (reminders, startDate, endDate) => {
+  return reminders.filter((r) => {
+    return moment(r.date).isBetween(moment(startDate), moment(endDate));
+  });
+};
 
 export default class Calendar extends React.Component {
   componentDidMount() {
@@ -35,46 +43,10 @@ export default class Calendar extends React.Component {
     window.alert(date.toJSON());
   }
 
-  getReminders(n) {
-    if (n == 3) {
-      return [
-        {
-          title: "lorem ipsum",
-          color: "green",
-        },
-        {
-          title: "Other text",
-          color: "green",
-        },
-      ];
-    }
-
-    if (n == 5) {
-      return [
-        {
-          title: "lorem ipsum",
-          color: "green",
-        },
-        {
-          title: "Other text",
-          color: "blue",
-        },
-        {
-          title: "I'm orange",
-          color: "orange",
-        },
-        {
-          title: "Other text",
-          color: "blue",
-        },
-        {
-          title: "I'm orange",
-          color: "orange",
-        },
-      ];
-    }
-
-    return [];
+  getReminders(n, reminders) {
+    return reminders.filter((r) => {
+      return moment(r.date).date() == n;
+    });
   }
 
   generateCalendar() {
@@ -83,97 +55,119 @@ export default class Calendar extends React.Component {
     const screenWidth = Dimensions.get("window").width;
     const smallScreen = screenWidth < 820;
     return (
-      <>
-        <View style={styles.week}>
-          {DAYS.map((day) => {
-            return (
-              <View style={[styles.weekDay]} key={day}>
-                <Text numberOfLines={1} style={[styles.dayText]}>
-                  {day}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
-        {data.weeks.map((days, wIndex) => {
+      <RemindersSubscriber>
+        {/* Store state is the first argument and actions are the second one */}
+        {(state) => {
+          const reminders = getRemindersFromRange(
+            state.reminders,
+            data.startDate,
+            data.endDate
+          );
           return (
-            <View style={styles.week} key={`w-${wIndex}`}>
-              {days.map((n, index) => {
-                return (
-                  <View
-                    key={`day${index}`}
-                    style={[
-                      styles.calendarItem,
-                      smallScreen
-                        ? {
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }
-                        : {},
-                    ]}
-                  >
-                    <TouchableOpacity
-                      style={{ height: "100%", width: "100%" }}
-                      disabled={!n}
-                      onPress={() => this.openDay(n)}
-                    >
-                      <Text
-                        style={
-                          smallScreen
-                            ? { textAlign: "center", flex: 1, height: "100%" }
-                            : { padding: 4 }
-                        }
-                      >
-                        {n ? n : ""}
+            <>
+              <View style={styles.week}>
+                {DAYS.map((day) => {
+                  return (
+                    <View style={[styles.weekDay]} key={day}>
+                      <Text numberOfLines={1} style={[styles.dayText]}>
+                        {day}
                       </Text>
-                      {!smallScreen ? (
-                        <View style={styles.remidersContainer}>
-                          <View style={{ flex: 1 }}>
-                            {this.getReminders(n)
-                              .slice(0, 3)
-                              .map((reminder) => {
-                                return (
-                                  <Text
-                                    numberOfLines={1}
-                                    style={[
-                                      styles.reminder,
-                                      {
-                                        backgroundColor: reminder.color,
-                                      },
-                                    ]}
-                                  >
-                                    {"9:00am " + reminder.title}
-                                  </Text>
-                                );
-                              })}
-                          </View>
+                    </View>
+                  );
+                })}
+              </View>
+              {data.weeks.map((days, wIndex) => {
+                return (
+                  <View style={styles.week} key={`w-${wIndex}`}>
+                    {days.map((n, index) => {
+                      return (
+                        <View
+                          key={`day${index}`}
+                          style={[
+                            styles.calendarItem,
+                            smallScreen
+                              ? {
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }
+                              : {},
+                          ]}
+                        >
+                          <TouchableOpacity
+                            style={{ height: "100%", width: "100%" }}
+                            disabled={!n}
+                            onPress={() => this.openDay(n)}
+                          >
+                            <Text
+                              style={
+                                smallScreen
+                                  ? {
+                                      textAlign: "center",
+                                      flex: 1,
+                                      height: "100%",
+                                    }
+                                  : { padding: 4 }
+                              }
+                            >
+                              {n ? n : ""}
+                            </Text>
+                            {!smallScreen ? (
+                              <View style={styles.remidersContainer}>
+                                <View style={{ flex: 1 }}>
+                                  {this.getReminders(n, reminders)
+                                    .slice(0, 3)
+                                    .map((reminder) => {
+                                      return (
+                                        <Text
+                                          numberOfLines={1}
+                                          style={[
+                                            styles.reminder,
+                                            {
+                                              backgroundColor: reminder.color,
+                                            },
+                                          ]}
+                                        >
+                                          {"9:00am " + reminder.title}
+                                        </Text>
+                                      );
+                                    })}
+                                </View>
+                              </View>
+                            ) : (
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  flex: 1,
+                                  justifyContent: "center",
+                                }}
+                              >
+                                {this.getReminders(n, reminders)
+                                  .slice(0, 3)
+                                  .map((reminder) => {
+                                    return (
+                                      <View
+                                        style={[
+                                          styles.smallCircle,
+                                          {
+                                            backgroundColor: reminder.color,
+                                          },
+                                        ]}
+                                      />
+                                    );
+                                  })}
+                              </View>
+                            )}
+                          </TouchableOpacity>
                         </View>
-                      ) : (
-                        <View style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}>
-                          {this.getReminders(n)
-                            .slice(0, 3)
-                            .map((reminder) => {
-                              return (
-                                <View
-                                  style={[
-                                    styles.smallCircle,
-                                    {
-                                      backgroundColor: reminder.color,
-                                    },
-                                  ]}
-                                />
-                              );
-                            })}
-                        </View>
-                      )}
-                    </TouchableOpacity>
+                      );
+                    })}
                   </View>
                 );
               })}
-            </View>
+            </>
           );
-        })}
-      </>
+        }}
+      </RemindersSubscriber>
     );
   }
 
@@ -228,6 +222,7 @@ const createStyles = () => {
       height: 18,
       color: "white",
       padding: 4,
+      marginLeft: 6,
       margin: 2,
       borderRadius: 4,
     },

@@ -7,14 +7,17 @@ import Calendar from "../components/Calendar";
 import { CURRENT_MONTH, CURRENT_YEAR } from "../Util/calendar";
 import { Button } from "react-native-paper";
 
+import { useReminders } from "../store/reminders";
+
 export default function CalendarScreen({ navigation }) {
   const [selectedYear, setSelectedYear] = useState(CURRENT_YEAR.toString());
   const [selectedMonth, setSelectedMonth] = useState(CURRENT_MONTH.toString());
+  const [{ reminders }] = useReminders();
   return (
     <>
       <View
         style={{
-          flexDirection: "column",
+          flexDirection: "row",
           paddingVertical: 10,
           justifyContent: "flex-end",
         }}
@@ -76,6 +79,9 @@ export default function CalendarScreen({ navigation }) {
         >
           Add Reminder
         </Button>
+        <Text
+          style={{ textAlign: "center" }}
+        >{`Count: ${reminders.length}`}</Text>
       </View>
     </>
   );
