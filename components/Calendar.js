@@ -82,7 +82,7 @@ export default class Calendar extends React.Component {
                     {days.map((n, index) => {
                       return (
                         <View
-                          key={`day${index}`}
+                          key={`day${n}-${index}`}
                           style={[
                             styles.calendarItem,
                             smallScreen
@@ -116,9 +116,10 @@ export default class Calendar extends React.Component {
                                 <View style={{ flex: 1 }}>
                                   {this.getReminders(n, reminders)
                                     .slice(0, 3)
-                                    .map((reminder) => {
+                                    .map((reminder, index) => {
                                       return (
                                         <Text
+                                          key={reminder.id}
                                           numberOfLines={1}
                                           style={[
                                             styles.reminder,
@@ -146,6 +147,7 @@ export default class Calendar extends React.Component {
                                   .map((reminder) => {
                                     return (
                                       <View
+                                        key={reminder.id}
                                         style={[
                                           styles.smallCircle,
                                           {
@@ -209,7 +211,8 @@ const createStyles = () => {
     calendarItem: {
       flex: 1,
       height: wp("8%"),
-      maxHeight: hp("12%"),
+      minHeight: 35,
+      maxHeight: hp("16%"),
       overflow: "hidden",
       borderColor: "#4679A2",
       borderRadius: 4,

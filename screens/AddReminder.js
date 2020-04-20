@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
-import { StyleSheet, Text, View, Alert } from "react-native";
+import { StyleSheet, Text, View, Alert, InteractionManager } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { TextInput, Button } from "react-native-paper";
 import { useState } from "react";
@@ -21,7 +21,7 @@ export default function AddReminderScreen({ navigation }) {
 
   const [isSaving, setIssaving] = useState(false);
   const [values, setValues] = useState({});
-  const [state, actions] = useReminders();
+  const [, actions] = useReminders();
 
   const promptError = (message) => {
     if (Platform.OS == "web") {
@@ -32,28 +32,41 @@ export default function AddReminderScreen({ navigation }) {
 
   const save = async (values) => {
     const appid = "27a3e6a3b704892ee586f5284872bf80";
-    const data = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${values.city}&appid=${appid}`)
-    .then(function(response) {
-      return response.json();
-    }).catch(() => {
-      setIssaving(false);
-      return null;
-    });
+    try {
+      const data = await fetch(
+        `http://api.openweathermap.org/data/2.5/weather?q=${values.city}&appid=${appid}`
+      )
+        .then(function (response) {
+          return response.json();
+        })
+        .catch(() => {
+          setIssaving(false);
+          return null;
+        });
 
-    if (data && data.cod != "404") {
-      values.meta = data;
-      actions.addReminder(values);
-      setValues({});
-      if (!Platform.OS == "web") {
-        navigation.goBack();
+      if (data && data.cod != "404") {
+        values.meta = data;
+        requestAnimationFrame(() => {
+          actions.addReminder(values);
+        });
+        InteractionManager.runAfterInteractions(() => {
+          requestAnimationFrame(() => {
+            setValues({});
+            if (!Platform.OS == "web") {
+              navigation.goBack();
+            } else {
+              navigation.navigate("Root");
+            }
+          });
+        });
       } else {
-        navigation.navigate("Root");
+        setIssaving(false);
+        alert("Invalid city!");
       }
-    } else {
-      setIssaving(false);
-      alert("Invalid city!")
+    } catch (_err) {
+      console.error(_err);
     }
-  }
+  };
 
   const handleSubmit = () => {
     if (!values.title) return promptError("Title required!");
@@ -61,7 +74,6 @@ export default function AddReminderScreen({ navigation }) {
     if (!values.description) return promptError("Description required!");
     if (!values.color) return promptError("Color required!");
     if (!values.city) return promptError("City required!");
-
 
     setIssaving(true);
     save(values);

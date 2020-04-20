@@ -3,7 +3,9 @@ import { AsyncStorage } from "react-native";
 import { generateUUID } from "../Util/misc";
 
 const persist = () => async ({ getState }) => {
-  await AsyncStorage.setItem("@Store:reminders", JSON.stringify(getState()));
+  requestAnimationFrame(async () => {
+    await AsyncStorage.setItem("@Store:reminders", JSON.stringify(getState()));
+  });
 };
 
 export const getPersistedState = async () => {
