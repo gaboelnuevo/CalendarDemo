@@ -17,11 +17,22 @@ import { Avatar, Card, IconButton } from "react-native-paper";
 import _ from "lodash";
 import moment from "moment";
 
-function Item({ title, date, city, color, removeItem }) {
+const getWheather = (metadata) => {
+  if (metadata && metadata["weather"]) {
+    if (metadata["weather"].length) {
+      return `(${metadata.weather[0].description})`;
+    }
+  }
+
+  return null;
+};
+
+function Item({ title, date, city, color, meta, removeItem }) {
+  const wheather = getWheather(meta);
   return (
     <Card.Title
-      title={`${moment(date).format('lll')}, ${title}`}
-      subtitle={city}
+      title={`${moment(date).format("lll")}, ${title}`}
+      subtitle={city + (wheather ? ` ${wheather}`: "")}
       left={(props) => (
         <Avatar.Icon
           {...props}
@@ -30,7 +41,12 @@ function Item({ title, date, city, color, removeItem }) {
         />
       )}
       right={(props) => (
-        <IconButton {...props} color={"red"} icon="minus-circle" onPress={removeItem} />
+        <IconButton
+          {...props}
+          color={"red"}
+          icon="minus-circle"
+          onPress={removeItem}
+        />
       )}
     />
   );
@@ -42,7 +58,7 @@ export default function ReminderScreen() {
     _.sortBy(data, (r) => moment(r.date).toDate().getTime());
   const removeItem = (id) => {
     actions.removeReminder(id);
-  }
+  };
   return (
     <View style={{ flex: 1, flexDirection: "column" }}>
       {Platform.OS == "web" ? (
@@ -51,19 +67,27 @@ export default function ReminderScreen() {
           contentContainerStyle={styles.contentContainer}
         >
           {sortByDate(reminders).map((reminder) => {
-            return <Item key={reminder.id} {...reminder} removeItem={() => removeItem(reminder.id)} />;
+            return (
+              <Item
+                key={reminder.id}
+                {...reminder}
+                removeItem={() => removeItem(reminder.id)}
+              />
+            );
           })}
         </ScrollView>
       ) : (
         <FlatList
           style={{ flex: 1 }}
           data={sortByDate(reminders)}
-          renderItem={({ item }) => <Item {...item} removeItem={() => removeItem(item.id)} />}
+          renderItem={({ item }) => (
+            <Item {...item} removeItem={() => removeItem(item.id)} />
+          )}
           keyExtractor={(item) => item.id}
         />
       )}
       <Text
-          style={{ textAlign: "center", padding: 5 }}
+        style={{ textAlign: "center", padding: 5 }}
       >{`Count: ${reminders.length}`}</Text>
     </View>
   );
