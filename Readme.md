@@ -14,7 +14,7 @@ npm install -g expo-cli yarn
 + Run app:
 
 ```
-git clone https://github.com/gaboelnuevo/DemoCalendar
+git clone https://github.com/gaboelnuevo/CalendarDemo
 ```
 
 ```
