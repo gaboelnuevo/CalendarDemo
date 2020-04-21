@@ -1,6 +1,3 @@
-Calendar Demo
-################
-
 + Demo: https://expo.io/@gaboelnuevo/CalendarDemo
 
 + Install global dependencies
