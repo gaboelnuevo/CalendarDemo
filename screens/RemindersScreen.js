@@ -27,38 +27,45 @@ const getWheather = (metadata) => {
   return null;
 };
 
-function Item({ title, date, city, color, meta, removeItem }) {
+function Item({ title, date, city, color, meta, removeItem, editItem }) {
   const wheather = getWheather(meta);
   return (
-    <Card.Title
-      title={`${moment(date).format("lll")}, ${title}`}
-      subtitle={city + (wheather ? ` ${wheather}`: "")}
-      left={(props) => (
-        <Avatar.Icon
-          {...props}
-          theme={{ colors: { primary: color } }}
-          icon="calendar"
-        />
-      )}
-      right={(props) => (
-        <IconButton
-          {...props}
-          color={"red"}
-          icon="minus-circle"
-          onPress={removeItem}
-        />
-      )}
-    />
+    <Card onPress={editItem}>
+      <Card.Title
+        title={`${moment(date).format("lll")}, ${title}`}
+        subtitle={city + (wheather ? ` ${wheather}` : "")}
+        left={(props) => (
+          <Avatar.Icon
+            {...props}
+            theme={{ colors: { primary: color } }}
+            icon="calendar"
+          />
+        )}
+        right={(props) => (
+          <IconButton
+            {...props}
+            color={"red"}
+            icon="minus-circle"
+            onPress={removeItem}
+          />
+        )}
+      />
+    </Card>
   );
 }
 
-export default function ReminderScreen() {
+export default function ReminderScreen({ navigation }) {
   const [{ reminders }, actions] = useReminders();
   const sortByDate = (data) =>
     _.sortBy(data, (r) => moment(r.date).toDate().getTime());
   const removeItem = (id) => {
     actions.removeReminder(id);
   };
+
+  const editItem = (item) => {
+    navigation.navigate("EditReminder", { data: item });
+  };
+
   return (
     <View style={{ flex: 1, flexDirection: "column" }}>
       {Platform.OS == "web" ? (
@@ -71,6 +78,7 @@ export default function ReminderScreen() {
               <Item
                 key={reminder.id}
                 {...reminder}
+                editItem={() => editItem(reminder)}
                 removeItem={() => removeItem(reminder.id)}
               />
             );
@@ -81,7 +89,11 @@ export default function ReminderScreen() {
           style={{ flex: 1 }}
           data={sortByDate(reminders)}
           renderItem={({ item }) => (
-            <Item {...item} removeItem={() => removeItem(item.id)} />
+            <Item
+              {...item}
+              removeItem={() => removeItem(item.id)}
+              editItem={() => editItem(item)}
+            />
           )}
           keyExtractor={(item) => item.id}
         />

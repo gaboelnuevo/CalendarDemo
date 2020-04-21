@@ -8,6 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import AddReminderScreen from "./screens/AddReminder";
+import EditReminderScreen from "./screens/EditReminder";
 import useLinking from "./navigation/useLinking";
 import { useReminders, getPersistedState } from "./store/reminders";
 
@@ -36,9 +37,10 @@ export default function App(props) {
           "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         });
 
-        const state = await getPersistedState();
-
-        initState(state);
+        if (!isLoadingComplete) {
+          const state = await getPersistedState();
+          initState(state);
+        }
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);
@@ -69,6 +71,13 @@ export default function App(props) {
                 title: "Add Reminder",
               }}
               component={AddReminderScreen}
+            />
+            <Stack.Screen
+              name="EditReminder"
+              options={{
+                title: "Edit Reminder",
+              }}
+              component={EditReminderScreen}
             />
           </Stack.Navigator>
         </NavigationContainer>

@@ -30,6 +30,23 @@ export const RemidersStore = createStore({
       });
       dispatch(persist());
     },
+    updateReminder: (id, values) => ({ setState, getState, dispatch }) => {
+      // mutate state syncronously
+
+      let reminders = getState().reminders.slice();
+      let reminder = reminders.find((r) => {
+        return r.id == id;
+      });
+
+      if (reminder) {
+        Object.assign(reminder, values || {});
+      }
+      
+      setState({
+        reminders,
+      });
+      dispatch(persist());
+    },
     removeReminder: (id) => ({ setState, getState, dispatch }) => {
       let reminders = getState()
         .reminders.slice()
