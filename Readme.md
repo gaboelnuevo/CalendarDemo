@@ -1,7 +1,7 @@
 CalendarDemo
 ===============
 
-+ Web demo: https://calendar-demo-expo.herokuapp.com/tabs/Calendar
++ Web demo: https://calendar-demo-expo.herokuapp.com/
 
 + Expo: https://expo.io/@gaboelnuevo/CalendarDemo
 
