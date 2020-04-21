@@ -1,4 +1,9 @@
-+ Demo: https://expo.io/@gaboelnuevo/CalendarDemo
+CalendarDemo
+===============
+
++ Web demo: https://calendar-demo-expo.herokuapp.com/tabs/Calendar
+
++ Expo: https://expo.io/@gaboelnuevo/CalendarDemo
 
 + Install global dependencies
 
