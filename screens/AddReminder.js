@@ -1,7 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import * as React from "react";
-import { StyleSheet, Text, View, Alert, InteractionManager } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  InteractionManager,
+} from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { TextInput, Button } from "react-native-paper";
 import { useState } from "react";
@@ -110,7 +116,7 @@ export default function AddReminderScreen({ navigation }) {
         value={values["city"]}
         onChangeText={handleInputChange("city")}
       />
-      <TextInput
+      {/*       <TextInput
         label="Color"
         selectionColor={values["color"]}
         style={[styles.input]}
@@ -118,8 +124,9 @@ export default function AddReminderScreen({ navigation }) {
         style={{ color: values["color"] }}
         editable={false}
         onChangeText={handleInputChange("color")}
-      />
+      /> */}
       <ColorPicker
+        key={"color"}
         selectedColor={values["color"]}
         onSelect={handleInputChange("color")}
       />
