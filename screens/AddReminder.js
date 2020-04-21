@@ -40,7 +40,7 @@ export default function AddReminderScreen({ navigation }) {
     const appid = "27a3e6a3b704892ee586f5284872bf80";
     try {
       const data = await fetch(
-        `http://api.openweathermap.org/data/2.5/weather?q=${values.city}&appid=${appid}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${values.city}&appid=${appid}`
       )
         .then(function (response) {
           return response.json();
